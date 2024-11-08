@@ -37,15 +37,12 @@ Area* InserirNo(Area* a, int comeco, int tamanho ){
     return a;
 }
 
-void *organiza_heap (int heap[], Area *lista, int cord){
-    
-    if(lista != NULL){
-        if(cord < 20){
-            for(int i = lista->comeco; i< (lista->tamanho + lista->comeco -1); i++){
-                heap[i] = 0;
-            }
-            organiza_heap(heap,lista->prox,lista->tamanho + lista->comeco -1);
+void organiza_heap(int heap[], Area *lista) {
+    while (lista != NULL) {
+        for (int i = lista->comeco; i < lista->comeco + lista->tamanho; i++) {
+            heap[i] = 0;
         }
+        lista = lista->prox;
     }
 }
 int Search_menor(Area *lista, int x){
@@ -85,7 +82,8 @@ Area *best_type(Area *lista, int x){
             lista->tamanho = lista->tamanho - x;
             if(lista->tamanho == 0){
                 Area *no = (Area*)malloc(sizeof(Area));
-                no == lista->prox;
+                no = lista->prox;
+                free(lista);
                 return no;
             }
             lista->comeco = lista->comeco + x;
@@ -101,7 +99,8 @@ Area *worst_type(Area *lista, int x){
             lista->tamanho = lista->tamanho - x;
             if(lista->tamanho == 0){
                 Area *no = (Area*)malloc(sizeof(Area));
-                no == lista->prox;
+                no = lista->prox;
+                free(lista);
                 return no;
             }
             lista->comeco = lista->comeco + x;
@@ -117,7 +116,8 @@ Area *first_type(Area *lista, int x){
             lista->tamanho = lista->tamanho - x;
             if(lista->tamanho == 0){
                 Area *no = (Area*)malloc(sizeof(Area));
-                no == lista->prox;
+                no = lista->prox;
+                free(lista);
                 return no;
             }
             lista->comeco = lista->comeco + x;
@@ -142,7 +142,7 @@ int main()
     for(int i=0;i<20;i++){
         heap[i]=1;
     }
-    organiza_heap(heap,lista,0);
+    organiza_heap(heap,lista);
     printf("\n\n");
     printf("O que deseja fazer ?\n");
     break;
