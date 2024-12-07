@@ -136,9 +136,12 @@ int Search_maior(Area *lista, int x){
         return 0;
     }else{
         if(lista->tamanho >= x)
-            return (Search_menor(lista->prox, x) > lista->tamanho)? Search_menor(lista->prox, x) : lista->tamanho;
+            if((Search_maior(lista->prox, x) > lista->tamanho))
+                return Search_maior(lista->prox, x);
+            else
+                return lista->tamanho;
         else
-            return Search_menor(lista->prox, x);
+            return Search_maior(lista->prox, x);
     }
 }
 
