@@ -146,6 +146,13 @@ void ImprimeHeap(int *heap){
     }
 }
 
+void ExibirCheio(Cheio *a){
+    if(a != NULL){
+        printf("\n\n Nome: %s \n Comeco: %d \n Final: %d \n Tamanho: %d \n", a->nome, a->comeco, (a->comeco + a->tamanho), a->tamanho);
+        ExibirCheio(a->prox);
+    }
+}
+
 //////////////////////////////////////////////////////////////////////////////////////
 
 int Search_menor(Area *lista, int x){
@@ -387,16 +394,16 @@ int main()
         ImprimeHeap(heap);
         printf("\n\n");
         char op[100];       //String que representa qual sera a operacao feita
-        printf("Qual o operação deseja fazer(exibir, implementar, tipo, ajuda)? ");
+        printf("Qual o operação deseja fazer(implementar, tipo, exibir, ajuda, sair)? ");
         char confirm[20];
         fgets(confirm, 20,stdin);
-        if(confirm[0] == 'i'){
+        //confirm[strcspn(confirm,"\n")] = 0;
+
+        if(confirm[0] == 'i' || confirm[0] == 'I'){
+
             clear_screen();
             printf("Digite a operacao desejada(new a 6, del a, c = a): ");
-            //if(confirm[0] == 'n' || confirm[0] == 'N' || type[0] == 'w' || type[0] == 'f')
-            //getchar();
             fgets(op, 100, stdin);
-            
             char aux[100];
             for(int i=0; op[i] != ' ';i++){
                 aux[i] = op[i];
@@ -441,8 +448,7 @@ int main()
                 lista = InserirNoArea(lista,a,tam);
                 objetos = InserirNoCheio(objetos,a,tam,nome);
                 objeto = InserirObjeto(objeto,a,tam);
-            }
-            if(strcmp(aux, "del") == 0){
+            }else if(strcmp(aux, "del") == 0){
                 char nome[97];
                 strcpy(nome,op+3);
                 Cheio *b = (Cheio*)malloc(sizeof(Cheio));
@@ -450,34 +456,81 @@ int main()
                 lista = RemoverArea(lista,b->comeco,b->tamanho);
                 objetos = RemoverCheio(objetos,b->comeco);
                 lista = OrdenarAreas(lista);
+            }else{
+
+                char aux2[100];
+                int k = 0;
+                for(int i=0; op[i] != '\0';i++){
+                    if(op[i] == '='){
+                        for(int j = i+1; op[j]!='\0';j++){
+                            aux2[k]=op[j];
+                            k++;
+                        }
+                    }
+                }
+                aux2[k]='\0';
+                Cheio *b = (Cheio*)malloc(sizeof(Cheio));
+                b = ProcuraRemover(objetos, aux2);
+                objetos = InserirNoCheio(objetos, b->comeco, b->tamanho, aux2);
+                free(b);
             }
+
         }
-        /*switch(confirm[0])
-        {
-            case 's':
-                clear_screen();
-                LimparType(type);
-                printf("Digite o tipo de operacao desejada(first,best,worst,next): ");
-                getchar();
-                fgets(type, 6, stdin);
-                type[strcspn(type,"\n")] = 0;
-                break;
 
-            case 'S':
-                clear_screen();
-                LimparType(type);
-                printf("Digite o tipo de operacao desejada(first,best,worst,next): ");
-                getchar();
-                fgets(type, 6, stdin);
-                type[strcspn(type,"\n")] = 0;
-                break;
+        if(confirm[0] == 't' || confirm[0] == 'T'){
 
-            case 'n':
-                break;
+            clear_screen();
+            LimparType(type);
+            printf("Digite o tipo de operacao desejada(first,best,worst,next): ");
+            //getchar();
+            fgets(type, 6, stdin);
+            //type[strcspn(type,"\n")] = 0;
 
-            case 'N':
-                break;
-        }*/
-       
+        }
+
+        if(confirm[0] == 'e' || confirm[0] == 'E'){
+
+            clear_screen();
+            printf("                            Heap\n");
+            ImprimeHeap(heap);
+            printf("\n\n\n");
+            ExibirCheio(objetos);
+            getchar();
+
+        }
+
+        if(confirm[0] == 'a' || confirm[0] == 'A'){
+
+            clear_screen();
+            printf("\n     Bem-vindo a area de ajuda    \nAqui voce encontra o que alguns comandos fazem, para facilitar sua navegação:\n\n");
+            printf("     Qual o operação deseja fazer?     " );
+            printf("\nimplementar: O comando 'implementar' te possibilita ir para area de implementação onde poderá alocar um novo espaço ao heap ou deletar um espaço do heap,\nalém de poder fazer atribuições.");
+            printf("\ntipo: O comando 'tipo' te possibilita mudar o tipo de implementação feito podendo variar entre: first, best, worst, next.");
+            printf("\nexibir: O comando 'exibir' te possibilita exibir todos o espaços alocados no heap com suas devidas informações.");
+            printf("\najuda: O comando 'ajuda' te possibilita entrar no menu de ajuda em que estamos.");
+            printf("\nsair: O comando 'sair' te possibilita fechar o programa.\n\n\n");
+            printf("Implementar:\n\n");
+            printf("     Digite a operação desejada:     ");
+            printf("\nnew: O comando 'new' aloca um novo espaço no heap, sua sintaxe é: new 'nome' 'tamanho'");
+            printf("\ndel: O comando 'del' exclui um alocação ja existente no heap, sua sintaxe é: del 'nome'");
+            printf("\natribuição: tambem é possivel fazer a atribuição, para isso voce deverá usar a seguinte sintexe: 'nome_do_novo_a_ser_atribuido' = 'nome_de_qual_deseja_atribuir'\n\n\n");
+            printf("Tipo:\n\n");
+            printf("     Digite o tipo de operacao desejada:     ");
+            printf("\nfirst: O camando 'first' define o tipo de alocação para first.");
+            printf("\nbest: O camando 'best' define o tipo de alocação para best.");
+            printf("\nworst: O camando 'worst' define o tipo de alocação para worst.");
+            printf("\nnext: O camando 'next' define o tipo de alocação para next.\n\n\n");
+            getchar();
+
+        }
+        if(confirm[0] == 's' || confirm[0] == 'S'){
+
+            clear_screen();
+            printf("Obrigado por usar nosso programa :)\n\n");
+            printf("Aperte qualquer tecla para fecha-lo: ");
+            getchar();
+            clear_screen();
+            break;
+        }
     }
 }
