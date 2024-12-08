@@ -1,4 +1,4 @@
-# Trabalho1-PP
+# TrabalhoHeap-PP
 
 <p>Neste trabalho estaremos desenvolvendo uma ferramenta para simular a manipulação de memoria no heap, utilizando a linguagem c.</p>
 <h1>Integrantes:</h1>
