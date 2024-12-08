@@ -2,15 +2,8 @@
 #include <locale.h>
 #include <stdlib.h>
 #include <string.h>
-#ifdef __linux__
-    #include <unistd.h>
-#elif _WIN32
-    #include <windows.h>
-#else
 
-#endif
-
-//////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////LIMPAR TELA/////////////////////////////////////
 
 void clear_screen(){
     #ifdef __linux__
@@ -22,21 +15,11 @@ void clear_screen(){
     #endif
 }
 
-void MySleep(int tempoMs){
-    #ifdef __linux__
-        usleep(tempoMs *1000);
-    #elif _WIN32
-        Sleep(tempoMs);
-    #else
-
-    #endif
-}
-
-////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////TAMANHO DO HEAP//////////////////////////////////////////
 
 int P = 20;
 
-///////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////FUNÇÕES AUXILIARES////////////////////////////////////////
 
 void RemoveEspacos(char *a){
     for(int i=0; a[i] != '\0'; i++){
@@ -55,7 +38,7 @@ void LimparType(char *a){
     }
 }
 
-//////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////ESTRUTURAS////////////////////////////////////
 
 typedef struct Area{              //Areas que estão livres
 
@@ -74,7 +57,7 @@ typedef struct Cheio{           // Areas que estão cheias
 
 } Cheio;
 
-//////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////INSERÇÕES/////////////////////////////////////
 
 Area* InserirNoArea(Area* a, int comeco, int tamanho ){
     if(a!=NULL){
@@ -130,7 +113,7 @@ Cheio* InserirObjeto(Cheio* a,int comeco, int tamanho){
     }
 }
 
-//////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////FUNÇÕES PARA HEAP////////////////////////////////////
 
 void organiza_heap(int *heap, Area *lista) {
     while (lista != NULL) {
@@ -153,7 +136,7 @@ void ExibirCheio(Cheio *a){
     }
 }
 
-//////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////FUNÇÕES PROCURADORAS/////////////////////////////////
 
 int Search_menor(Area *lista, int x){
     if(lista == NULL){
@@ -208,7 +191,7 @@ int Search_next(Area * lista,Cheio *objeto, int x){
     }
 }
 
-//////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////FUNÇÕES ESCOLHAS DE TIPO///////////////////////////////////////
 
 int best_type(Area *lista, int x){
     if(lista == NULL){
@@ -266,7 +249,7 @@ int next_type(Area *lista,Cheio *objeto, int x){
         }
 }
 
-//////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////FUNÇÕES PARA REMOÇÃO///////////////////////////////////////
 Area* EspacoAntes(Area* a,int comeco){
     if(a == NULL){
         return NULL;
@@ -339,19 +322,19 @@ Area *OrdenarAreas(Area *lista) {
 }
 
 Cheio *RemoverCheio(Cheio *a, int comeco) {
-    // Caso base: lista vazia
+    
     if (a == NULL) {
         return NULL;
     }
 
-    // Verifica se o nó atual deve ser removido
+    
     if (a->comeco == comeco) {
-        Cheio *prox = a->prox; // Salva o próximo nó
-        free(a);               // Libera o nó atual
-        return RemoverCheio(prox, comeco); // Continua removendo
+        Cheio *prox = a->prox; 
+        free(a);               
+        return RemoverCheio(prox, comeco); 
     }
 
-    // Nó atual não corresponde; verifica o próximo nó
+    
     a->prox = RemoverCheio(a->prox, comeco);
     return a;
 }
@@ -367,7 +350,7 @@ Cheio *ProcuraRemover(Cheio *ob, char b[]){
         }
     }
 }
-//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////MAIN//////////////////////////////////////
 
 int main()
 {  
@@ -381,7 +364,7 @@ int main()
     objeto = NULL;
     
 
-    char type[6] = {"first"};      // String que representa tipo de implementacao deseja
+    char type[6] = {"first"};      
 
     while (1) {
         int heap[P];
@@ -393,11 +376,11 @@ int main()
         organiza_heap(heap,lista);
         ImprimeHeap(heap);
         printf("\n\n");
-        char op[100];       //String que representa qual sera a operacao feita
+        char op[100];       
         printf("Qual o operação deseja fazer(implementar, tipo, exibir, ajuda, sair)? ");
         char confirm[20];
         fgets(confirm, 20,stdin);
-        //confirm[strcspn(confirm,"\n")] = 0;
+       
 
         if(confirm[0] == 'i' || confirm[0] == 'I'){
 
@@ -482,10 +465,8 @@ int main()
             clear_screen();
             LimparType(type);
             printf("Digite o tipo de operacao desejada(first,best,worst,next): ");
-            //getchar();
             fgets(type, 6, stdin);
-            //type[strcspn(type,"\n")] = 0;
-
+            
         }
 
         if(confirm[0] == 'e' || confirm[0] == 'E'){
@@ -533,4 +514,8 @@ int main()
             break;
         }
     }
+    free(lista);
+    free(objetos);
+    free(objetos);
+    return 0;
 }
