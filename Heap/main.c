@@ -388,9 +388,12 @@ int main()
             printf("Digite a operacao desejada(new a 6, del a, c = a): ");
             fgets(op, 100, stdin);
             char aux[100];
+            int p = 0;
             for(int i=0; op[i] != ' ';i++){
                 aux[i] = op[i];
+                p++;
             }
+            aux[p] = '\0';
             RemoveEspacos(op);
             op[strcspn(op,"\n")]=0;
             
@@ -410,22 +413,18 @@ int main()
                 {
                     case 'f':
                         a = first_type(lista, tam);
-                        printf("%d", a);
                         break;
 
                     case 'b':
                         a = best_type(lista, tam);
-                        printf("%d", a);
                         break;
 
                     case 'w':
                         a = worst_type(lista, tam);
-                        printf("%d", a);
                         break;
 
                     case 'n':
                         a = next_type(lista, objeto,tam);
-                        printf("%d", a);
                         break;
                 }
                 lista = InserirNoArea(lista,a,tam);
@@ -434,10 +433,10 @@ int main()
             }else if(strcmp(aux, "del") == 0){
                 char nome[97];
                 strcpy(nome,op+3);
-                Cheio *b = (Cheio*)malloc(sizeof(Cheio));
-                b = ProcuraRemover(objetos, nome);
-                lista = RemoverArea(lista,b->comeco,b->tamanho);
-                objetos = RemoverCheio(objetos,b->comeco);
+                //Cheio *l = (Cheio*)malloc(sizeof(Cheio));
+                Cheio *l = ProcuraRemover(objetos, nome);
+                lista = RemoverArea(lista,l->comeco,l->tamanho);
+                objetos = RemoverCheio(objetos,l->comeco);
                 lista = OrdenarAreas(lista);
             }else{
 
@@ -445,17 +444,14 @@ int main()
                 int k = 0;
                 for(int i=0; op[i] != '\0';i++){
                     if(op[i] == '='){
-                        for(int j = i+1; op[j]!='\0';j++){
+                        for(int j = i+2; op[j]!='\0';j++){
                             aux2[k]=op[j];
                             k++;
                         }
                     }
                 }
-                aux2[k]='\0';
-                Cheio *b = (Cheio*)malloc(sizeof(Cheio));
-                b = ProcuraRemover(objetos, aux2);
-                objetos = InserirNoCheio(objetos, b->comeco, b->tamanho, aux2);
-                free(b);
+                Cheio *b = ProcuraRemover(objetos, aux2);
+                objetos = InserirNoCheio(objetos, b->comeco, b->tamanho, aux);
             }
 
         }
@@ -516,6 +512,6 @@ int main()
     }
     free(lista);
     free(objetos);
-    free(objetos);
+    free(objeto);
     return 0;
 }
